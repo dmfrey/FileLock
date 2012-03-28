@@ -1,3 +1,0 @@
-include *.txt
-reversive-include docs *.txt
-
