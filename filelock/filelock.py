@@ -15,6 +15,8 @@ class FileLock(object):
         """ Prepare the file locker. Specify the file to lock and optionally
             the maximum timeout and the delay between each attempt to lock.
         """
+        if timeout is not None and delay is None:
+            raise ValueError("If timeout is not None, then delay must not be None.")
         self.is_locked = False
         self.lockfile = os.path.join(os.getcwd(), "%s.lock" % file_name)
         self.file_name = file_name
@@ -35,7 +37,9 @@ class FileLock(object):
                 break;
             except OSError as e:
                 if e.errno != errno.EEXIST:
-                    raise 
+                    raise
+                if self.timeout is None:
+                    raise FileLockException("Could not acquire lock on {}".format(self.file_name))
                 if (time.time() - start_time) >= self.timeout:
                     raise FileLockException("Timeout occured.")
                 time.sleep(self.delay)
