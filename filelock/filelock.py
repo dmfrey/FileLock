@@ -32,6 +32,7 @@ class FileLock(object):
         while True:
             try:
                 self.fd = os.open(self.lockfile, os.O_CREAT|os.O_EXCL|os.O_RDWR)
+                self.is_locked = True #moved to ensure tag only when locked
                 break;
             except OSError as e:
                 if e.errno != errno.EEXIST:
@@ -39,7 +40,7 @@ class FileLock(object):
                 if (time.time() - start_time) >= self.timeout:
                     raise FileLockException("Timeout occured.")
                 time.sleep(self.delay)
-        self.is_locked = True
+#        self.is_locked = True
  
  
     def release(self):
