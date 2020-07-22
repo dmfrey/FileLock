@@ -9,3 +9,12 @@ FileLock
     
 
     Originally posted at http://www.evanfosmark.com/2009/01/cross-platform-file-locking-support-in-python/
+# Usage
+```python
+from filelock import FileLock
+
+with FileLock("myfile.txt.lock"):
+    print("Lock acquired.")
+    with open("myfile.txt"):
+        # work with the file as it is now locked
+```
