@@ -35,7 +35,7 @@ class FileLock(object):
             try:
                 self.fd = os.open(self.lockfile, os.O_CREAT|os.O_EXCL|os.O_RDWR)
                 self.is_locked = True #moved to ensure tag only when locked
-                break;
+                break
             except OSError as e:
                 if e.errno != errno.EEXIST:
                     raise
